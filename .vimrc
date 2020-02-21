@@ -9,7 +9,14 @@ let g:NERDCustomDelimiters={
 	\ 'javascript.jsx': { 'left': '//', 'right': '', 'leftAlt': '{/*', 'rightAlt': '*/}' },
 \}
 
-
+"Auto close tag
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<CR>}<ESC>O
+inoremap {;<CR> {<CR>};<ESC>O
 
 
 set dir=/tmp
@@ -36,7 +43,32 @@ filetype plugin on                  " required
 set clipboard=unnamed
 set rtp+=~/.fzf
 set colorcolumn=0
+
+"eslint settings
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\}
+
+let g:ale_fixers = {
+  \    'javascript': ['prettier', 'eslint'],
+  \    'typescript': ['prettier', 'tslint'],
+  \    'scss': ['prettier'],
+  \    'html': ['prettier'],
+\}
+let g:ale_fix_on_save = 1
+"Prettier settings
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
+
+
 call plug#begin('~/.vim/plugged')
+"Setup pretier
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'branch': 'release/0.x'
+  \ }
+
+Plug 'dense-analysis/ale'
 
 " Enable line number:
 :set nu
