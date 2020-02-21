@@ -2,12 +2,12 @@ autocmd BufEnter,BufRead *.conf setf dosini
 let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.php,*.jsx"
 
 " Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
+"let g:NERDDefaultAlign = 'left'
 " Add your own custom formats or override the defaults
 " let g:NERDCustomDelimiters = { 'c': { 'left': '{/*','right': '*/}' } }
-let g:NERDCustomDelimiters={
-	\ 'javascript.jsx': { 'left': '//', 'right': '', 'leftAlt': '{/*', 'rightAlt': '*/}' },
-\}
+"let g:NERDCustomDelimiters={
+"  \ 'javascript.jsx': { 'left': '//', 'right': '', 'leftAlt': '{/*', 'rightAlt': '*/}' },
+"\}
 
 "Auto close tag
 inoremap " ""<left>
@@ -57,8 +57,8 @@ let g:ale_fixers = {
 \}
 let g:ale_fix_on_save = 1
 "Prettier settings
-let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
+"let g:prettier#autoformat = 0
+"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
 
 
 call plug#begin('~/.vim/plugged')
@@ -89,6 +89,7 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
 
+Plug 'airblade/vim-gitgutter'
 "Auto close tag
 Plug 'alvan/vim-closetag'
 
@@ -143,9 +144,9 @@ Plug 'junegunn/fzf.vim'
 Plug '~/my-prototype-plugin'
 " Commenting Purpose
 " Plug 'tpope/vim-commentary'
-Plug 'suy/vim-context-commentstring'
-Plug 'preservim/nerdcommenter'
-" Plug 'tomtom/tcomment_vim'
+"Plug 'suy/vim-context-commentstring'
+"Plug 'preservim/nerdcommenter'
+ Plug 'tomtom/tcomment_vim'
 "Plug 'scrooloose/nerdcommenter'
 " Docker Syntax Highlighting
 Plug 'ekalinin/Dockerfile.vim'
