@@ -40,6 +40,9 @@ let NERDTreeQuitOnOpen=1
 set guifont=Droid Sans Mono for Powerline
 set encoding=UTF-8
 set nocompatible              " be iMproved, required
+set path+=**
+set wildignore+=*/node_modules/*
+" set wildmenu
 set backspace=indent,eol,start
 set shiftwidth=2
 set tabstop=2
@@ -49,6 +52,7 @@ filetype plugin on                  " required
 set clipboard=unnamed
 set rtp+=~/.fzf
 set colorcolumn=0
+set hlsearch
 
 "eslint settings
 let g:ale_linters = {
@@ -92,6 +96,10 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 nnoremap <Leader>t :BTags<CR>
 nnoremap <Leader>T :Tags<CR>
+nnoremap <Leader>F :Ag<CR>
+"Shortcut for replace after hit Shift + 8
+nnoremap <Leader>r :%s///g<Left><Left>
+nnoremap <Leader>rc :%s///gc<Left><Left><Left>
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'VundleVim/Vundle.vim'
 Plug 'Valloric/YouCompleteMe'
@@ -100,8 +108,9 @@ Plug 'ryanoasis/vim-devicons'
 
 Plug 'airblade/vim-gitgutter'
 "Auto close tag
-Plug 'alvan/vim-closetag'
-
+" Plug 'alvan/vim-closetag'
+Plug 'tpope/vim-surround'
+Plug 'haya14busa/is.vim'
 "CTRL+ 0  to quit editing"
 " Lightline makes your vim more beautiful
 Plug 'itchyny/lightline.vim'
@@ -109,7 +118,7 @@ Plug 'dikiaap/minimalist'
 set laststatus=2
 " Make sure you use single quotes
 Plug 'https://github.com/editorconfig/editorconfig-vim'
-Plug 'ryanoasis/vim-devicons'
+Plug 'ryanoasyais/vim-devicons'
 " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
 Plug 'https://github.com/vim-python/python-syntax'
@@ -166,6 +175,7 @@ Plug 'yardnsm/vim-import-cost', { 'do': 'npm install' }"
 " Initialize plugin system
 call plug#end()
 set t_Co=256
+
 syntax on
 set background=dark
 colorscheme gruvbox
@@ -178,7 +188,8 @@ command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline', '--preview', '~/.vim/plugged/fzf.vim/bin/preview.sh {}']}, <bang>0)
 
 
-"coc.nvim setup
+
+"=====================coc.nvim setup=======================
 " TextEdit might fail if hidden is not set.
 set hidden
 
@@ -219,12 +230,12 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
-if has('patch8.1.1068')
-  " Use `complete_info` if your (Neo)Vim version supports it.
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
+" if has('patch8.1.1068')
+"   " Use `complete_info` if your (Neo)Vim version supports it.
+"   inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+" else
+"   imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" endif
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
