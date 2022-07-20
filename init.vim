@@ -92,6 +92,7 @@ nnoremap <A-h> <C-w>h
 nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
+nmap <silent> gd <Plug>(coc-definition)
 
 " start terminal in insert mode
 au BufEnter * if &buftype == 'terminal' | :startinsert | endif
