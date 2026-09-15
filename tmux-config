@@ -1,0 +1,74 @@
+# ~/.tmux.conf
+
+# ---- General ----------------------------------------------------------
+set -g default-shell /usr/bin/zsh
+set -g default-terminal "tmux-256color"          # proper colors
+set -ga terminal-overrides ",*256col*:Tc"        # truecolor support
+set -g mouse on                                   # scroll + resize with mouse
+set -g history-limit 50000                        # bigger scrollback
+set -sg escape-time 0                             # no delay for ESC (vim-friendly)
+set -g focus-events on
+setw -g mode-keys vi                              # vi keys in copy mode
+
+# Start windows/panes at 1, renumber on close
+set -g base-index 1
+setw -g pane-base-index 1
+set -g renumber-windows on
+
+# ---- Prefix: Ctrl-b (tmux default) ------------------------------------
+unbind C-a
+set -g prefix C-b
+bind C-b send-prefix
+
+# ---- Reload config ----------------------------------------------------
+bind r source-file ~/.tmux.conf \; display "Config reloaded"
+
+# ---- Splits keep current path (and are intuitive) ---------------------
+bind | split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+unbind '"'
+unbind %
+
+# ---- Pane navigation (vim-style) --------------------------------------
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+# Resize panes (repeatable with -r)
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+# ---- Nightfly theme (transparent-friendly, no plugins) ----------------
+# Matches the vim colorscheme set in ~/.vimrc.
+#
+# Adapted from the upstream theme that ships with the colorscheme, at
+# ~/.vim/pack/colors/start/nightfly/extras/nightfly.tmux — but that one pins a
+# solid "bg=#092236" status bar, which would defeat the transparency below.
+# Transparency comes from your terminal's opacity setting; bg=default lets it
+# show through, so the layout here is kept and only the palette swapped.
+#
+# Palette: black #011627  dark blue #092236  slate #2f3346  steel #4b6479
+#          cadet #a1aab8  white #c3ccdc  blue #82aaff  violet #c792ea
+set -g status-style "bg=default,fg=#c3ccdc"       # transparent bar, soft fg
+set -g status-left "#[bg=#82aaff,fg=#011627,bold] #S #[bg=default] "
+set -g status-left-length 30
+set -g status-right "#[fg=#a1aab8] %Y-%m-%d #[fg=#82aaff]%H:%M "
+
+# Windows
+setw -g window-status-current-style "bg=default,fg=#82aaff,bold"
+setw -g window-status-current-format " #I:#W "
+setw -g window-status-style "fg=#a1aab8,bg=default"
+setw -g window-status-format " #[fg=#4b6479]#I:#[fg=#a1aab8]#W "
+
+# Panes
+set -g pane-border-style "fg=#2f3346"
+set -g pane-active-border-style "fg=#c792ea"      # violet, keeping the purple accent
+
+# Messages
+set -g message-style "bg=#82aaff,fg=#011627"
+
+set -g status-position bottom
+set -g status-justify left
