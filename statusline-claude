@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+# Claude Code status line: model, context tokens, session cost, 5h limit reset.
+import datetime, json, sys
+
+d = json.load(sys.stdin)
+
+def g(path, default=None):
+    cur = d
+    for k in path.split("."):
+        if not isinstance(cur, dict) or k not in cur:
+            return default
+        cur = cur[k]
+    return cur if cur is not None else default
+
+def human(n):
+    if n >= 1_000_000:
+        return f"{n / 1_000_000:.2f}M"
+    if n >= 1_000:
+        return f"{n / 1_000:.1f}k"
+    return str(n)
+
+model = g("model.display_name", "?")
+used = (g("context_window.total_input_tokens", 0) or 0) + (
+    g("context_window.total_output_tokens", 0) or 0
+)
+size = g("context_window.context_window_size", 0) or 0
+pct = g("context_window.used_percentage")
+cost = g("cost.total_cost_usd", 0) or 0
+
+tokens = human(used)
+if size:
+    tokens += f"/{human(size)}"
+if pct is not None:
+    tokens += f" ({pct:.0f}%)"
+
+parts = [model, tokens, f"${cost:.2f}"]
+
+# rate_limits is absent for non-subscribers and before the first API response
+resets_at = g("rate_limits.five_hour.resets_at")
+if resets_at:
+    when = datetime.datetime.fromtimestamp(resets_at)
+    left = when - datetime.datetime.now()
+    mins = max(0, int(left.total_seconds() // 60))
+    parts.append(f"resets {when:%H:%M} ({mins // 60}h{mins % 60:02d}m)")
+
+print(" | ".join(parts))
